@@ -1,0 +1,74 @@
+version: '2'
+
+services:
+  # LDAP
+  openldap:
+    build: ./openldap
+    container_name: cicd-openldap
+    environment:
+      LDAP_ORGANISATION: "example"
+      LDAP_DOMAIN: "example.com"
+      LDAP_ADMIN_PASSWORD: "password"
+    ports:
+      - "10389:389"
+  # LDAP Management Tool
+  phpldapadmin:
+    image: osixia/phpldapadmin:0.7.1
+    container_name: cicd-phpldapadmin
+    environment:
+      PHPLDAPADMIN_LDAP_HOSTS: "ldap"
+      PHPLDAPADMIN_HTTPS: "false"
+    ports:
+      - "10080:80"
+    links:
+      - "openldap:ldap"
+  # VCS(SCM)
+  gitlab:
+    build: ./gitlab
+    container_name: cicd-gitlab
+    ports:
+      - '80:80'
+      - '433:433'
+    links:
+      - "openldap:ldap"
+  # Issue Tracker
+  redmine:
+    image: redmine:3.4.3
+    container_name: cicd-redmine
+    ports:
+      - '13000:3000'
+    links:
+      - "openldap:ldap"
+  # Chat
+  mattermost:
+    build: ./mattermost
+    container_name: cicd-mattermost
+    ports:
+      - '18065:8065'
+    links:
+      - "gitlab:scm"
+  # CI Management
+  jenkins:
+    image: jenkins/jenkins:2.95
+    container_name: cicd-jenkins
+    ports:
+      - '18080:8080'
+      - '50000:50000'
+    links:
+      - "openldap:ldap"
+  # Repository Management
+  nexus:
+    image: sonatype/nexus3:3.6.2
+    container_name: cicd-nexus
+    ports:
+      - '18081:8081'
+    links:
+      - "openldap:ldap"
+  # Quality Management(& Report)
+  sonarqube:
+    build: ./sonarqube
+    container_name: cicd-sonarqube
+    ports:
+      - '19000:9000'
+    links:
+      - "openldap:ldap"

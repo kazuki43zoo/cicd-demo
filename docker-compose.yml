@@ -26,6 +26,9 @@ services:
   gitlab:
     build: ./gitlab
     container_name: cicd-gitlab
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'http://localhost'
     ports:
       - '80:80'
       - '433:433'

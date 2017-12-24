@@ -5,26 +5,14 @@ objectclass: top
 objectclass: organizationalUnit
 ou: groups
 
-dn: cn=admin,ou=groups,dc=example,dc=com
-cn: admin
+dn: cn=project-managers,ou=groups,dc=example,dc=com
+cn: project-managers
 objectclass: groupOfUniqueNames
 objectclass: top
 uniquemember: uid=kazuki,ou=people,dc=example,dc=com
 
-dn: cn=sonar-administrators,ou=groups,dc=example,dc=com
-cn: sonar-administrators
-objectclass: groupOfUniqueNames
-objectclass: top
-uniquemember: uid=kazuki,ou=people,dc=example,dc=com
-
-dn: cn=nx-admin,ou=groups,dc=example,dc=com
-cn: nx-admin
-objectclass: groupOfUniqueNames
-objectclass: top
-uniquemember: uid=kazuki,ou=people,dc=example,dc=com
-
-dn: cn=user,ou=groups,dc=example,dc=com
-cn: user
+dn: cn=project-developers,ou=groups,dc=example,dc=com
+cn: project-developers
 objectclass: groupOfUniqueNames
 objectclass: top
 uniquemember: uid=user,ou=people,dc=example,dc=com
